@@ -95,20 +95,30 @@ void percorrerEmOrdem(ARVORE_COSTURADA *raiz) {
 
 int main() {
     ARVORE_COSTURADA *raiz = NULL;
-    int valor[5];
+    int valores[] = {2, 4, 6, 8, 10};
+    int num_valores = sizeof(valores) / sizeof(int); //avalia o tamanho do array em bytes e ddivide o tamanho dos inteiros
 
-    for (int i = 0; i < 5; i++) {
-        printf("Digite o valor a ser inserido na arvore: ");
-        scanf("%d", &valor[i]);
+    for (int i = 0; i < num_valores; i++) {
         ITEM item;
-        item.chave = valor[i];
+        item.chave = valores[i];
         raiz = insere(raiz, item);
     }
 
-    printf("\nValores armazenados na arvore em ordem: ");
+    printf("Valores armazenados na arvore em ordem: ");
     percorrerEmOrdem(raiz);
     printf("\n");
 
     destruir(raiz);
     return 0;
 }
+
+
+/*
+
+Dúvidas
+
+1) Como a gente sabe se a costura com o predecessor e sucessor realmente deu certo?
+2) Quando você insere um novo item, a costura do item anterior é automaticamente ajustada? Se não é ajustada, seria necessário criar uma função auxiliar para isso?
+3) Por que, quando eu executo o código, acaba dando um loop infinito com o número 10? Por que só mostra o último valor armazenado em forma de loop?
+
+*/
