@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -63,7 +62,7 @@ ARVORE_COSTURADA* inserePreOrdem(ARVORE_COSTURADA *raiz, ITEM item, ARVORE_COSTU
         ARVORE_COSTURADA *novo = criarNo(item);
         novo->pai = pai;
         novo->direcao = direcao;
-        return novo;
+        return novo; // retorna a raiz da árvore
     }
     ARVORE_COSTURADA *atual = raiz;
     while(true) {
@@ -75,7 +74,7 @@ ARVORE_COSTURADA* inserePreOrdem(ARVORE_COSTURADA *raiz, ITEM item, ARVORE_COSTU
                 esquerda->direcao = NoEsquerdo;
                 atual->esq = esquerda;
                 esquerda->pred = encontraPredecessor(esquerda);
-                break;
+                return raiz; // retorna a raiz da árvore
             }
             atual = esquerda;
         } else {
@@ -86,9 +85,45 @@ ARVORE_COSTURADA* inserePreOrdem(ARVORE_COSTURADA *raiz, ITEM item, ARVORE_COSTU
                 direita->direcao = NoDireito;
                 atual->dir = direita;
                 direita->suc = encontraSucessor(direita);
+                return raiz; // retorna a raiz da árvore
+            }
+            atual = direita;
+        }
+    }
+}
+
+ARVORE_COSTURADA* inserePosOrdem(ARVORE_COSTURADA *raiz, ITEM item, ARVORE_COSTURADA* pai, DIRECAO direcao) {
+    if (raiz == NULL) {
+        ARVORE_COSTURADA *novo = criarNo(item);
+        novo->pai = pai;
+        novo->direcao = direcao;
+        return novo;
+    }
+
+    ARVORE_COSTURADA *atual = raiz;
+    while (true) {
+        if (item.chave > atual->item.chave) {
+            ARVORE_COSTURADA *direita = atual->dir;
+            if (direita == NULL) {
+                direita = criarNo(item);
+                direita->pai = atual;
+                direita->direcao = NoDireito;
+                atual->dir = direita;
+                direita->suc = encontraSucessor(direita);
                 break;
             }
             atual = direita;
+        } else {
+            ARVORE_COSTURADA *esquerda = atual->esq;
+            if (esquerda == NULL) {
+                esquerda = criarNo(item);
+                esquerda->pai = atual;
+                esquerda->direcao = NoEsquerdo;
+                atual->esq = esquerda;
+                esquerda->pred = encontraPredecessor(esquerda);
+                break;
+            }
+            atual = esquerda;
         }
     }
     return atual;
@@ -111,6 +146,18 @@ void percorrerPreOrdem(ARVORE_COSTURADA *raiz) {
     percorrerPreOrdem(raiz->esq);
     percorrerPreOrdem(raiz->dir);
 }
+
+void percorrerPosOrdem(ARVORE_COSTURADA *raiz) {
+    if (raiz == NULL) {
+        return;
+    }
+
+    percorrerPosOrdem(raiz->esq);
+    percorrerPosOrdem(raiz->dir);
+    printf("%d ", raiz->item.chave);
+}
+
+
 int main() {
     ARVORE_COSTURADA *raiz = NULL;
 
